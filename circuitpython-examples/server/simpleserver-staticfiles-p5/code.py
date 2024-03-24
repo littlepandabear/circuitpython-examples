@@ -6,7 +6,7 @@ import neopixel
 
 from adafruit_esp32spi import adafruit_esp32spi
 import adafruit_esp32spi.adafruit_esp32spi_wifimanager as wifimanager
-import adafruit_esp32spi.adafruit_esp32spi_wsgiserver as server
+import adafruit_wsgi.esp32spi_wsgiserver as server
 
 import adafruit_lsm6ds.lsm6ds33
 

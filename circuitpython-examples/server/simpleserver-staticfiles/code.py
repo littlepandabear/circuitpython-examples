@@ -6,16 +6,19 @@ import neopixel
 
 from adafruit_esp32spi import adafruit_esp32spi
 import adafruit_esp32spi.adafruit_esp32spi_wifimanager as wifimanager
-import adafruit_esp32spi.adafruit_esp32spi_wsgiserver as server
+import adafruit_wsgi.esp32spi_wsgiserver as server
 
 import adafruit_lsm6ds.lsm6ds33
+import adafruit_bmp280
 
 i2c = board.I2C()
 
 # accelerometer
 lsm6ds33 = adafruit_lsm6ds.lsm6ds33.LSM6DS33(i2c)
+bmp280 = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
 
-# This example depends on the 'static' folder
+
+# This example depends on the 'static' folder in the examples folder
 # being copied to the root of the circuitpython filesystem.
 # This is where our static assets like html, js, and css live.
 
@@ -180,6 +183,10 @@ def get_accel(environ):  # pylint: disable=unused-argument
     }
     data = json_module.dumps(accel)
     return ("200 OK", [], data)
+    
+def get_temp(environ):  # pylint: disable=unused-argument
+    temp = "Temperature: {:.1f} C".format(bmp280.temperature)
+    return ("200 OK", [], temp)
 
 
 # Here we create our application, setting the static directory location
@@ -209,6 +216,8 @@ web_app = SimpleWSGIApplication(static_dir=static)
 
 # HTTP Requests
 web_app.on("GET", "/ajax/get_accel", get_accel)
+
+web_app.on("GET", "/ajax/get_temp", get_temp)
 
 
 # Here we setup our server, passing in our web_app as the application

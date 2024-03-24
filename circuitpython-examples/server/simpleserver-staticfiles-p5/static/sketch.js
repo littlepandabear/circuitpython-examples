@@ -1,4 +1,18 @@
-let accel;
+let accel = {x: 0, y: 0, z: 0};
+
+function setup(){
+	createCanvas(500, 500)
+	//JS timer
+	setInterval(getAccel, 1000)
+}
+
+function draw(){
+	background(255, 0, 0)
+	fill(0)
+	const x = map(accel.x, -1, 1, 0, width)
+	circle(x, width/2, 50)
+}
+
 
 //asynchrounous get request
 async function getAccel() {
@@ -21,7 +35,3 @@ async function getAccel() {
 	}
     
 }
-
-//JS timer
-setInterval(getAccel, 1000)
-
